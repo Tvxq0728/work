@@ -47,10 +47,9 @@ class UserRequest extends FormRequest
         "name.required"=>"名前は必須です。",
         "email.required"=>"メールアドレスは必須です。",
         "email.email"=>"メールアドレスの形式で入力してください",
-        // "password.required"=>"パスワードは必須です。",
         // input type="email"で自動で確認している。
         "password.required"=>"パスワードは必須です。",
-        "password_check.same"=>"パスワードとパスワード確認用が一致しません",
+        "password_check.same"=>"パスワードと確認用パスワードが一致しません",
         ];
     }
 }

@@ -8,6 +8,7 @@
 </head>
 <body>
   <style>
+
   body{
     height:100%;
   }
@@ -56,6 +57,9 @@
   .error{
     font-size:5px;
     color:red;
+  }
+  .footer{
+    text-align:center;
   }
 </style>
 <body>
@@ -116,7 +120,7 @@
           <tr>
             <td>
               <input type="text" name="password_check"
-              placeholder="確認用">
+              placeholder="確認用パスワード">
             </td>
           </tr>
 
@@ -144,9 +148,11 @@
         </div>
       </table>
     </div >
+    <div class="footer">
+      <footer>Atte.inc</footer>
+    </div>
   </div {{--all--}}>
 
-  <footer>Atte.inc</footer>
 </body>
 </html>
 </body>

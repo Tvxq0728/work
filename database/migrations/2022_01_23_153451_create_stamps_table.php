@@ -16,9 +16,9 @@ class CreateStampsTable extends Migration
         Schema::create('stamps', function (Blueprint $table) {
             $table->id();
             $table->integer("user_id");
-            $table->time("start_time");
-            $table->time("end_time");
-            $table->time("work_time");
+            $table->datetime("start_at");
+            $table->datetime("end_at");
+            $table->datetime("work_at");
             $table->timestamp("created_at")->useCurrent()->nullable();
             $table->timestamp("update_at")->useCurrent()->nullable();
         });
