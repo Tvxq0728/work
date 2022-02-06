@@ -112,14 +112,14 @@
 
           <tr>
             <td>
-              <input type="text" name="password"
+              <input type="password" name="password"
               placeholder="パスワード"
               value="{{old('password')}}">
             </td>
           </tr>
           <tr>
             <td>
-              <input type="text" name="password_check"
+              <input type="password" name="password_check"
               placeholder="確認用パスワード">
             </td>
           </tr>

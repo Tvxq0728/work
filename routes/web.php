@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\StampController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,13 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// 打刻ページ処理
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view("index");
+    // [StampController::class,"create"];
+})->middleware(["auth"]);
 
-Route::get('/login', function () {
-    return view('auth/login');
-});
-// ->middleware(['auth'])->name('dashboard');
+Route::post("/",function(){
+    [StampController::class,"create"];
+})->middleware(["auth"]);
+
+// 勤怠開始処理
+Route::post("/stamp/start",[StampController::class,"stampstart"]
+)->middleware(["auth"]);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';

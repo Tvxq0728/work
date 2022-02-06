@@ -20,7 +20,7 @@ class CreateStampsTable extends Migration
             $table->datetime("end_at");
             $table->datetime("work_at");
             $table->timestamp("created_at")->useCurrent()->nullable();
-            $table->timestamp("update_at")->useCurrent()->nullable();
+            $table->timestamp("updated_at")->useCurrent()->nullable();
         });
     }
 

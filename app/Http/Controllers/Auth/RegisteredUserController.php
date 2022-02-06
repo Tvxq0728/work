@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use App\Http\Requests\UserRequest;
 //フォームリクエストを作成。
+use App\Http\Requests\UserRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -49,8 +49,10 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Auth::login($user);
+        
+        // ↑ 記述後の処理が行われるのか。
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect("login");
     }
 }

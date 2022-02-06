@@ -29,8 +29,14 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ];
+    }
+    public function messages(){
+        return[
+        "email.required"=>"メールアドレスは必須です。",
+        "password.required"=>"パスワードは必須です。",
         ];
     }
 
@@ -91,3 +97,4 @@ class LoginRequest extends FormRequest
         return Str::lower($this->input('email')).'|'.$this->ip();
     }
 }
+
