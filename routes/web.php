@@ -24,8 +24,10 @@ Route::post("/",function(){
 })->middleware(["auth"]);
 
 // 勤怠開始処理
-Route::post("/stamp/start",[StampController::class,"stampstart"]
+Route::post("/stamp/start",[StampController::class,"start_attendance"]
 )->middleware(["auth"]);
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

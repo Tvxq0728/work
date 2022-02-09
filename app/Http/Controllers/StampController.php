@@ -12,13 +12,20 @@ class StampController extends Controller
     public function create(){
         return view("index");
     }
+    // 出勤時の処理
+    public function start_attendance(Request $request){
+        $user=Auth::id();
+        $today=Carbon::today()->format("Y-m-d");
+        $start_time=Stamp::where("user_id",$user)->where("start_at",$today)->value("start_at");
 
-    public function stampstart(Request $request){
-        $user=Auth::user();
-        $stampstart=Carbon::today();
-        $stamp_at=Stamp::create([
-            "user_id"=>$user->id,
-            "start_at"=>Carbon::now()
-        ]);
+        if($start_time == null){
+            Stamp::create([
+                "user_id"=>Auth::id(),
+                "start_at"=>Carbon::now(),
+            ]);
+            return redirect("/")->with("message","出勤を記録");
+        }else{
+            return redirect("/")->with("message","出勤済");
+        }
     }
 }

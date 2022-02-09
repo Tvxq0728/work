@@ -17,8 +17,9 @@ class CreateStampsTable extends Migration
             $table->id();
             $table->integer("user_id");
             $table->datetime("start_at");
-            $table->datetime("end_at");
-            $table->datetime("work_at");
+            $table->datetime("end_at")->nullable();
+            
+            $table->datetime("work_at")->nullable();
             $table->timestamp("created_at")->useCurrent()->nullable();
             $table->timestamp("updated_at")->useCurrent()->nullable();
         });

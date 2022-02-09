@@ -90,6 +90,11 @@
     </div>
 <!-- 打刻 -->
   <div class="content">
+    <div class="session">
+      <p>
+        {{session('message')}}
+      </p>
+    </div>
     <ul class="btn-list">
       <li class="stampbtn" id="btn_start">
         <form action="/stamp/start" method="POST">
