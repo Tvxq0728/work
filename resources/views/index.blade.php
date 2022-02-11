@@ -13,7 +13,7 @@
     color:black;
   }
   body{
-    height:100%;
+
   }
 /* ヘッダー */
   .header{
@@ -41,22 +41,17 @@
   .content{
     background:#F5F5F5
   }
-  .content_comment{
-    display:flex;
-    justify-content:center;
-  }
-  .content_button-ul{
+  .content_stampbtn{
     display:flex;
     justify-content:space-around;
-    list-style:none;
+    padding:20px 0;
   }
-  .content_button-ul li{
-    width:30%;
-    text-align:center;
+  .content button{
+    border:none;
+    padding:60px 120px;
+    background:white;
     font-weight:bold;
-    background-color:white;
-    padding:2rem 3rem;
-    margin-bottom:20px;
+
   }
 
 
@@ -90,22 +85,47 @@
     </div>
 <!-- 打刻 -->
   <div class="content">
+    <div class="user_list">
+      <h1>{{$user->name}}</h1>
+    </div>
     <div class="session">
       <p>
         {{session('message')}}
       </p>
     </div>
-    <ul class="btn-list">
-      <li class="stampbtn" id="btn_start">
-        <form action="/stamp/start" method="POST">
+
+    <div class="content_stampbtn" id="btn_start">
+      <form action="/stamp/start" method="POST">
+      {{--勤怠開始--}}
           @csrf
             <button type="submit" class="btn" id="btn_start">
               勤怠開始
             </button>
         </form>
-      </li>
-    </ul>
-
+        <form action="/stamp/end" method="POST">
+        {{--勤怠終了--}}
+          @csrf
+            <button type="submit" class="btn" id="btn_start">
+              勤怠終了
+            </button>
+        </form>
+      </div>
+    <div class="content_stampbtn" id="btn_start">
+      <form action="/stamp/start" method="POST">
+      {{--休憩開始--}}
+          @csrf
+            <button type="submit" class="btn" id="btn_start">
+              勤怠開始
+            </button>
+        </form>
+        <form action="/stamp/end" method="POST">
+        {{--休憩終了--}}
+          @csrf
+            <button type="submit" class="btn" id="btn_start">
+              勤怠終了
+            </button>
+        </form>
+      </div>
   </div>
 
 

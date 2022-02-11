@@ -13,7 +13,7 @@ use App\Http\Controllers\StampController;
 |
 */
 
-// 打刻ページ処理
+// 勤怠管理ページ
 Route::get('/', function () {
     return view("index");
     // [StampController::class,"create"];
