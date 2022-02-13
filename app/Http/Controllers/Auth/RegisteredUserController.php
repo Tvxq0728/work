@@ -50,7 +50,6 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         // Auth::login($user);
-        
         // ↑ 記述後の処理が行われるのか。
 
         return redirect("login");

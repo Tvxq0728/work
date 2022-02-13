@@ -86,7 +86,8 @@
 <!-- 打刻 -->
   <div class="content">
     <div class="user_list">
-      <h1>{{$user->name}}</h1>
+      {{--<h1>{{$user->name}}</h1>--}}
+      <p></p>
     </div>
     <div class="session">
       <p>

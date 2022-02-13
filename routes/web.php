@@ -13,19 +13,21 @@ use App\Http\Controllers\StampController;
 |
 */
 
-// 勤怠管理ページ
+// 打刻ページ
 Route::get('/', function () {
-    return view("index");
-    // [StampController::class,"create"];
+    [StampController::class,"create"];
 })->middleware(["auth"]);
-
-Route::post("/",function(){
+Route::post('/', function () {
     [StampController::class,"create"];
 })->middleware(["auth"]);
 
-// 勤怠開始処理
-Route::post("/stamp/start",[StampController::class,"start_attendance"]
+
+
+//勤怠開始ボタンを押した時
+Route::post("/stamp/start",[StampController::class,"attendance_start"]
 )->middleware(["auth"]);
+// 勤怠終了ボタンを押した時
+Route::post("/stamp/end",[StampController::class,"attendance_end"]);
 
 
 
