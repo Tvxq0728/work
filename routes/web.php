@@ -15,8 +15,11 @@ use App\Http\Controllers\StampController;
 
 // 打刻ページ
 Route::get('/', function () {
-    [StampController::class,"create"];
+    // [StampController::class,"create"];
+    $user=Auth::user();
+    return view("index",["user"=>$user]);
 })->middleware(["auth"]);
+
 Route::post('/', function () {
     [StampController::class,"create"];
 })->middleware(["auth"]);

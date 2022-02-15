@@ -9,8 +9,8 @@ class Stamp extends Model
 {
     use HasFactory;
 
-    protected $fillable=["user_id","start_at"];
-
+    protected $fillable=["user_id","start_at","date"];
+    protected $dates=["start_at"];
     public function user(){
         return $this->belongTo("App\Models\User");
     }

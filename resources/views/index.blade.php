@@ -37,6 +37,13 @@
   .header_nav a{
     text-decoration:none;
   }
+  /* ユーザータイトル */
+  .user_list-title{
+    font-weight:bold;
+    text-align:center;
+    padding-top:30px;
+  }
+
 /* 打刻 */
   .content{
     background:#F5F5F5
@@ -86,12 +93,27 @@
 <!-- 打刻 -->
   <div class="content">
     <div class="user_list">
-      {{--<h1>{{$user->name}}</h1>--}}
-      <p></p>
+      <p class="user_list-title">{{$user->name}}さんお疲れ様です。</p>
     </div>
     <div class="session">
       <p>
         {{session('message')}}
+      </p>
+      終了
+      <p>
+        {{session('end_at')}}
+      </p>
+      開始
+      <p>
+        {{session('start_at')}}
+      </p>
+      差分
+      <p>
+        {{session("work_total")}}
+      </p>
+      勤怠時間
+      <p>
+        {{session('work_at')}}
       </p>
     </div>
 
