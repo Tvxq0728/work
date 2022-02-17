@@ -30,7 +30,12 @@ Route::post('/', function () {
 Route::post("/stamp/start",[StampController::class,"attendance_start"]
 )->middleware(["auth"]);
 // 勤怠終了ボタンを押した時
-Route::post("/stamp/end",[StampController::class,"attendance_end"]);
+Route::post("/stamp/end",[StampController::class,"attendance_end"])->middleware(["auth"]);
+
+//休憩開始ボタンを押した時
+Route::post("rest/start",[StampController::class,"rest_start"])->middleware(["auth"]);
+//休憩終了ボタンを押した時
+Route::post("rest/end",[StampController::class,"rest_end"])->middleware(["auth"]);
 
 
 

@@ -134,18 +134,18 @@
         </form>
       </div>
     <div class="content_stampbtn" id="btn_start">
-      <form action="/stamp/start" method="POST">
+      <form action="/rest/start" method="POST">
       {{--休憩開始--}}
           @csrf
             <button type="submit" class="btn" id="btn_start">
-              勤怠開始
+              休憩開始
             </button>
         </form>
-        <form action="/stamp/end" method="POST">
+        <form action="/rest/end" method="POST">
         {{--休憩終了--}}
           @csrf
             <button type="submit" class="btn" id="btn_start">
-              勤怠終了
+              休憩終了
             </button>
         </form>
       </div>

@@ -7,6 +7,7 @@ use Auth;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Stamp;
+use App\Models\rests;
 class StampController extends Controller
 {
     // ログイン時勤務状態によってボタン機能を制限する。
@@ -39,24 +40,7 @@ class StampController extends Controller
         }else{
             return redirect("/")->with("message","出勤済");
         }
-        // $start_day=Stamp::where("user_id",$user->id)->where("start_at",$today)->value("start_at")->latest()->first()->format('Y-m-d');
-        // if($start_day == $today){
-        //     return redirect("/")->with("message","出勤済");
-        // }else{
-        //     Stamp::create([
-        //         "user_id"=>Auth::id(),
-        //         "start_at"=>Carbon::now(),
-        //     ]);
-        //     return redirect("/")->with([
-        //             "message"=>"出勤を記録",
-        //             "user"=>$user,
-        //             "day"=>$start_day,
-        //         ]);
-        // }
-
-
     }
-
     // 勤怠終了ボタンを押した時の処理
     public function attendance_end(){
         $user=Auth::user();
@@ -85,5 +69,16 @@ class StampController extends Controller
             "work_total"=>$work_total,
             "work_at"=>$work_at,
         ]);
+    }
+    // 休憩開始を押した時の処理
+    public function rest_start(){
+
+    }
+
+
+
+    // 休憩終了を押した時の処理
+    public function rest_end(){
+        
     }
 }
