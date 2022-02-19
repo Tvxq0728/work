@@ -103,6 +103,7 @@ class StampController extends Controller
         $rest=Rest::where("stamp_id",$stamp->id)->latest()->first();
         $rest_at=Rest::where("stamp_id",$stamp->id)->update([
             "end_at"=>Carbon::now(),
+            // total タイムゾーン解決次第記載。
         ]);
         return redirect("/")->with([
             "start"=>"true",

@@ -166,8 +166,8 @@
           @endif
         </form>
         <form action="/rest/end" method="POST">
-        @if(Session("rest_end"))
-        {{--休憩終了--}}
+          {{--休憩終了--}}
+          @if(Session("rest_end"))
           @csrf
             <button type="submit" class="btn_disabled" id="btn_start" disabled>
               休憩終了
