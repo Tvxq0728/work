@@ -7,7 +7,7 @@ use Auth;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Stamp;
-use App\Models\rests;
+use App\Models\Rest;
 class StampController extends Controller
 {
     // ログイン時勤務状態によってボタン機能を制限する。
@@ -18,7 +18,8 @@ class StampController extends Controller
 
 
         $user=Auth::user();
-        return view("index",["user"=>$user]);
+        return view("index",
+        ["user"=>$user]);
     }
 
     // 勤怠開始ボタンを押した時の処理
@@ -35,10 +36,15 @@ class StampController extends Controller
             ]);
             return redirect("/")->with([
                     "message"=>"出勤を記録",
-                    "user"=>$user,
+                    "start"=>"true",
+                    "rest_end"=>"true",
                 ]);
         }else{
-            return redirect("/")->with("message","出勤済");
+            return redirect("/")->with([
+                "message"=>"出勤済",
+                "start"=>"true",
+                "rest_rest"=>"true",
+            ]);
         }
     }
     // 勤怠終了ボタンを押した時の処理
@@ -68,17 +74,39 @@ class StampController extends Controller
             "start_at"=>$start_at,
             "work_total"=>$work_total,
             "work_at"=>$work_at,
+
+            "end"=>"true",
+            "rest_start"=>"true",
+            "rest_end"=>"true",
         ]);
     }
     // 休憩開始を押した時の処理
     public function rest_start(){
-
+        $user=Auth::user();
+        $today=Carbon::today()->format("Y-m-d");
+        $stamp=Stamp::where("user_id",$user->id)->latest()->first();
+        $rest_at=Rest::create([
+            "stamp_id"=>$stamp->id,
+            "date"=>$today,
+            "start_at"=>Carbon::now(),
+        ]);
+        return redirect("/")->with([
+            "start"=>"true",
+            "end"=>"true",
+            "rest_start"=>"true",
+        ]);
     }
-
-
-
     // 休憩終了を押した時の処理
     public function rest_end(){
-        
+        $user=Auth::user();
+        $stamp=Stamp::where("user_id",$user->id)->latest()->first();
+        $rest=Rest::where("stamp_id",$stamp->id)->latest()->first();
+        $rest_at=Rest::where("stamp_id",$stamp->id)->update([
+            "end_at"=>Carbon::now(),
+        ]);
+        return redirect("/")->with([
+            "start"=>"true",
+            "rest_end"=>"true",
+        ]);
     }
 }

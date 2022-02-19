@@ -58,7 +58,10 @@
     padding:60px 120px;
     background:white;
     font-weight:bold;
-
+  }
+  .btn_disabled{
+    border-color:red;
+    border-radius:10px;
   }
 
 
@@ -119,34 +122,62 @@
 
     <div class="content_stampbtn" id="btn_start">
       <form action="/stamp/start" method="POST">
-      {{--勤怠開始--}}
+        {{--勤怠開始--}}
+        @if(Session::has("start"))
           @csrf
+            <button type="submit" class="btn_disabled" id="btn_start" disabled>
+              勤怠開始
+            </button>
+        @else
+        @csrf
             <button type="submit" class="btn" id="btn_start">
               勤怠開始
             </button>
+        @endif
         </form>
         <form action="/stamp/end" method="POST">
         {{--勤怠終了--}}
+        @if(Session::has("end"))
           @csrf
+            <button type="submit" class="btn_disabled" id="btn_start" disabled>
+              勤怠終了
+            </button>
+          @else
+            @csrf
             <button type="submit" class="btn" id="btn_start">
               勤怠終了
             </button>
+          @endif
         </form>
       </div>
     <div class="content_stampbtn" id="btn_start">
       <form action="/rest/start" method="POST">
       {{--休憩開始--}}
+        @if(Session("rest_start"))
+          @csrf
+            <button type="submit" class="btn_disabled" id="btn_start" disabled>
+              休憩開始
+            </button>
+          @else
           @csrf
             <button type="submit" class="btn" id="btn_start">
               休憩開始
             </button>
+          @endif
         </form>
         <form action="/rest/end" method="POST">
+        @if(Session("rest_end"))
         {{--休憩終了--}}
           @csrf
-            <button type="submit" class="btn" id="btn_start">
+            <button type="submit" class="btn_disabled" id="btn_start" disabled>
               休憩終了
             </button>
+          @else
+          @csrf
+          <button type="submit" class="btn" id="btn_start">
+              休憩終了
+          </button>
+          @endif
         </form>
       </div>
   </div>

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Rest extends Model
 {
     use HasFactory;
+    protected $fillable=["stamp_id","start_at","date"];
+    protected $dates=["start_at"];
+    public function user(){
+        return $this->belongTo("App\Models\Stamp");
+    }
 }
