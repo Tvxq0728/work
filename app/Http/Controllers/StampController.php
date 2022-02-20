@@ -35,7 +35,7 @@ class StampController extends Controller
                 "start_at"=>Carbon::now(),
             ]);
             return redirect("/")->with([
-                    "message"=>"出勤を記録",
+                    "message"=>"出勤記録しました。",
                     "start"=>"true",
                     "rest_end"=>"true",
                 ]);
@@ -51,7 +51,7 @@ class StampController extends Controller
     public function attendance_end(){
         $user=Auth::user();
         $today=Carbon::today()->format('Y-m-d');
-        $start_at=Stamp::where('user_id', $user->id)->where('date', $today)->value('start_at');
+        $start_at=Stamp::where('user_id', $user->id)->where('date', $today)->orderBy("id","desc")->value('start_at');
         $end_time=Stamp::where('user_id', $user->id)->where('date', $today)->value('end_at');
 
         if($end_time !== null){
@@ -69,7 +69,7 @@ class StampController extends Controller
             ]);
         }
         return redirect("/")->with([
-            "message"=>"退勤記録しました",
+            "message"=>"退勤記録しました。",
             "end_at"=>$end_at,
             "start_at"=>$start_at,
             "work_total"=>$work_total,
@@ -84,30 +84,90 @@ class StampController extends Controller
     public function rest_start(){
         $user=Auth::user();
         $today=Carbon::today()->format("Y-m-d");
-        $stamp=Stamp::where("user_id",$user->id)->latest()->first();
-        $rest_at=Rest::create([
-            "stamp_id"=>$stamp->id,
-            "date"=>$today,
-            "start_at"=>Carbon::now(),
-        ]);
-        return redirect("/")->with([
-            "start"=>"true",
+        $stamp=Stamp::where("user_id",$user->id)->orderBy("id","desc")->first();
+        $stamp_test=Stamp::where("user_id",$user->id)->latest()->first();
+        $rest=Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->first();
+
+        $rest_desc=Rest::where("stamp_id",$stamp->id)->orderBy("stamp_id","desc")->get();
+
+        if(empty($rest) || !empty($rest->end_at)){
+            $rest_at=Rest::create([
+                "stamp_id"=>$stamp->id,
+                "date"=>$today,
+                "start_at"=>Carbon::now(),
+            ]);
+            return redirect("/")->with([
+                "message"=>"休憩開始記録しました。",
+                "start"=>"true",
+                "end"=>"true",
+                "rest_start"=>"true",
+                "rest_desc"=>$rest_desc,
+                "rest_first"=>$rest,
+            ]);
+        }
+        // 勤怠終了していた場合 本日日付を出す。
+        elseif(!empty($stamp->end_at)){
+            return redirect("/")->with([
+            "message"=>"今日は.$today.です",
             "end"=>"true",
             "rest_start"=>"true",
-        ]);
+            "rest_end"=>"true",
+            ]);
+        }
+        else{
+            return redirect("/")->with([
+                "message"=>"休憩中です",
+                "test"=>$rest,
+                "start"=>"true",
+                "end"=>"true",
+                "rest_start"=>"true",
+                "rest_desc"=>$rest_desc,
+                "rest_first"=>$rest,
+            ]);
+        }
     }
     // 休憩終了を押した時の処理
     public function rest_end(){
         $user=Auth::user();
+        $today=Carbon::today()->format("Y-m-d");
         $stamp=Stamp::where("user_id",$user->id)->latest()->first();
-        $rest=Rest::where("stamp_id",$stamp->id)->latest()->first();
-        $rest_at=Rest::where("stamp_id",$stamp->id)->update([
+        $rest=Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->first();
+
+        $rest_desc=Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->get();
+
+        if(empty($rest->end_at)){
+        $start_at=Rest::where("stamp_id",$stamp->id)->orderby("created_at","desc")->value("start_at");
+        $end_at=Carbon::now();
+        $total=$start_at->diffINSeconds($end_at);
+        $total_at=date("H:i:s",$total);
+
+        $rest_at=Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->whereNull("end_at")->update([
+            "stamp_id"=>$stamp->id,
             "end_at"=>Carbon::now(),
-            // total タイムゾーン解決次第記載。
+            "total_at"=>$total,
         ]);
         return redirect("/")->with([
+            "message"=>"休憩終了記録しました。",
+            "test"=>$rest,
             "start"=>"true",
             "rest_end"=>"true",
         ]);
+        }
+        // 勤怠終了していた場合 本日日付を出す。
+        elseif(!empty($rest->end_at) && !empty($stamp->end_at))
+        {
+            return redirect("/")->with([
+            "message"=>"今日は.$today.です",
+            "end"=>"true",
+            "rest_start"=>"true",
+            "rest_end"=>"true",
+            ]);
+        }else{
+            return redirect("/")->with([
+            "message"=>"休憩終了済",
+            "start"=>"true",
+            "rest_end"=>"true",
+            ]);
+    }
     }
 }

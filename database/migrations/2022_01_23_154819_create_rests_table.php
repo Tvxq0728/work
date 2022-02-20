@@ -17,9 +17,9 @@ class CreateRestsTable extends Migration
             $table->id();
             $table->integer("stamp_id");
             $table->date("date")->nullable();
-            $table->datetime("start_at")->nullable();
-            $table->datetime("end_at")->nullable();
-            $table->datetime("total_at")->nullable();
+            $table->time("start_at");
+            $table->time("end_at")->nullable();
+            $table->time("total_at")->nullable();
             $table->timestamp("created_at")->useCurrent()->nullable();
             $table->timestamp("updated_at")->useCurrent()->nullable();
         });

@@ -118,6 +118,14 @@
       <p>
         {{session('work_at')}}
       </p>
+      休憩並び替え
+      <p>
+        {{session("rest_desc")}}
+      </p>
+      休憩呼び出し
+      <p>
+        {{session("rest_first")}}
+      </p>
     </div>
 
     <div class="content_stampbtn" id="btn_start">
