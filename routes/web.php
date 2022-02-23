@@ -37,6 +37,7 @@ Route::post("rest/start",[StampController::class,"rest_start"])->middleware(["au
 //休憩終了ボタンを押した時
 Route::post("rest/end",[StampController::class,"rest_end"])->middleware(["auth"]);
 
+// 日別勤怠管理
 
 
 Route::get('/dashboard', function () {

@@ -49,14 +49,14 @@ class StampController extends Controller
     }
     // 勤怠終了ボタンを押した時の処理
     public function attendance_end(){
-        $user=Auth::user();
+        $user = Auth::user();
         $today=Carbon::today()->format('Y-m-d');
         $start_at=Stamp::where('user_id', $user->id)->where('date', $today)->orderBy("id","desc")->value('start_at');
         $end_time=Stamp::where('user_id', $user->id)->where('date', $today)->value('end_at');
 
-        if($end_time !== null){
+        if ($end_time !== null){
             return redirect("/")->with("message","退勤済");
-        }else{
+        } else {
             $end_at=Carbon::now();
             $work_total=$start_at->diffINSeconds($end_at);
             $work_at=date("H:i:s",$work_total);
@@ -65,16 +65,15 @@ class StampController extends Controller
                 "user_id"=>Auth::id(),
                 "end_at"=>Carbon::now(),
                 "start_at"=>$start_at,
-                "work_at"=>$work_at,
+                "work_at"=>$work_total,
             ]);
         }
         return redirect("/")->with([
             "message"=>"退勤記録しました。",
-            "end_at"=>$end_at,
-            "start_at"=>$start_at,
-            "work_total"=>$work_total,
-            "work_at"=>$work_at,
-
+            // "end_at"=>$end_at,
+            // "start_at"=>$start_at,
+            // "work_total"=>$work_total,
+            // "work_at"=>$work_at,
             "end"=>"true",
             "rest_start"=>"true",
             "rest_end"=>"true",
@@ -88,41 +87,41 @@ class StampController extends Controller
         $stamp_test=Stamp::where("user_id",$user->id)->latest()->first();
         $rest=Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->first();
 
-        $rest_desc=Rest::where("stamp_id",$stamp->id)->orderBy("stamp_id","desc")->get();
+        // $rest_desc=Rest::where("stamp_id",$stamp->id)->orderBy("stamp_id","desc")->get();
 
-        if(empty($rest) || !empty($rest->end_at)){
-            $rest_at=Rest::create([
-                "stamp_id"=>$stamp->id,
-                "date"=>$today,
-                "start_at"=>Carbon::now(),
-            ]);
+        if(!empty($stamp->end_at))
+        {
+            // 勤怠終了していた場合。
             return redirect("/")->with([
-                "message"=>"休憩開始記録しました。",
-                "start"=>"true",
+                "message"=>"今日は.$today.です",
                 "end"=>"true",
                 "rest_start"=>"true",
-                "rest_desc"=>$rest_desc,
-                "rest_first"=>$rest,
+                "rest_end"=>"true",
             ]);
         }
-        // 勤怠終了していた場合 本日日付を出す。
-        elseif(!empty($stamp->end_at)){
-            return redirect("/")->with([
-            "message"=>"今日は.$today.です",
-            "end"=>"true",
-            "rest_start"=>"true",
-            "rest_end"=>"true",
-            ]);
+        elseif(empty($rest) || !empty($rest->end_at)){
+                $rest_at=Rest::create([
+                    "stamp_id"=>$stamp->id,
+                    "date"=>$today,
+                    "start_at"=>Carbon::now(),
+                ]);
+                return redirect("/")->with([
+                    "message"=>"休憩開始記録しました。",
+                    "start"=>"true",
+                    "end"=>"true",
+                    "rest_start"=>"true",
+                    // "rest_desc"=>$rest_desc,
+                    // "rest_first"=>$rest,
+                ]);
         }
         else{
             return redirect("/")->with([
                 "message"=>"休憩中です",
-                "test"=>$rest,
                 "start"=>"true",
                 "end"=>"true",
                 "rest_start"=>"true",
-                "rest_desc"=>$rest_desc,
-                "rest_first"=>$rest,
+                // "rest_desc"=>$rest_desc,
+                // "rest_first"=>$rest,
             ]);
         }
     }
@@ -148,7 +147,6 @@ class StampController extends Controller
         ]);
         return redirect("/")->with([
             "message"=>"休憩終了記録しました。",
-            "test"=>$rest,
             "start"=>"true",
             "rest_end"=>"true",
         ]);

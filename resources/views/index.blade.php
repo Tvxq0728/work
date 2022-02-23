@@ -102,6 +102,8 @@
       <p>
         {{session('message')}}
       </p>
+
+      {{--検証用
       終了
       <p>
         {{session('end_at')}}
@@ -125,7 +127,7 @@
       休憩呼び出し
       <p>
         {{session("rest_first")}}
-      </p>
+      </p>--}}
     </div>
 
     <div class="content_stampbtn" id="btn_start">
