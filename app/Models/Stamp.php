@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Stamp extends Model
 {
@@ -11,7 +12,8 @@ class Stamp extends Model
 
     protected $fillable=["user_id","start_at","date"];
     protected $dates=["start_at"];
+
     public function user(){
-        return $this->belongTo("App\Models\User");
+        return $this->belongTo('App\Models\User');
     }
 }
