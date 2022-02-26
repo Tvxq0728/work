@@ -14,6 +14,9 @@ class Stamp extends Model
     protected $dates=["start_at"];
 
     public function user(){
-        return $this->belongTo('App\Models\User');
+        return $this->belongsTo('App\Models\User');
+    }
+    public function rest(){
+        return $this->hasMany("App\Models\Rest");
     }
 }

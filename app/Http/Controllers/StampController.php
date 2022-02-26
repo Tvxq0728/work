@@ -13,6 +13,8 @@ class StampController extends Controller
     // ログイン時勤務状態によってボタン機能を制限する。
     public function create(){
         $user = Auth::user();
+        $today = Carbon::now()->format("Y-m-d");
+        $end_at = Stamp::where('user_id', $user->id)->where('date', $today)->value('end_at');
         return view("index",
         ["user"=>$user]);
     }

@@ -24,12 +24,16 @@
   /* 日付 */
   .date_today{
     font-weight:bold;
-    font-size:20px;
+    font-size:30px;
     text-align:center;
   }
   /* 表 */
   .content{
     background:#F5F5F5
+  }
+  .info_attendance{
+    width:100%;
+    margin:0 auto;
   }
 </style>
 
@@ -72,20 +76,21 @@
         <th>休憩時間</th>
         <th>勤怠時間</th>
       </tr>
-      @php
-      var_dump($attendance)
-      @endphp
-
       @foreach($attendance as $attendance)
       <tr>
         <td>{{$attendance->user->name}}</td>
-        <td>日付</td>
-        <td>勤怠開始</td>
-        <td>勤怠終了</td>
+        <td>{{$attendance->date}}</td>
+        <td>{{$attendance->start_at}}</td>
+        <td>{{$attendance->end_at}}</td>
+
+
         <td>休憩時間</td>
-        <td>勤怠時間</td>
+        <td>{{$attendance->work_at}}</td>
       </tr>
       @endforeach
     </table>
   </div>
 </div>
+@php
+ dd($test1);
+@endphp
