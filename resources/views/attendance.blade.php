@@ -22,10 +22,23 @@
     text-decoration:none;
   }
   /* 日付 */
+  .date{
+    display:flex;
+    justify-content:center;
+  }
   .date_today{
     font-weight:bold;
     font-size:30px;
     text-align:center;
+    margin:0;
+  }
+  .date_button{
+    margin:0;
+    font-size:30px;
+    background:white;
+    border-color:blue;
+    color:blue;
+    cursor:pointer;
   }
   /* 表 */
   .content{
@@ -34,6 +47,9 @@
   .info_attendance{
     width:100%;
     margin:0 auto;
+  }
+  table{
+    text-align:center;
   }
 </style>
 
@@ -61,10 +77,19 @@
 
 <div class="content">
   <div class="date">
-    <form action="/">
-      <input type="hidden" name="back" value="">
+    <form action="/attendance" method="POST">
+      @csrf
+      <input type="hidden" name="back" value="back">
+      <input type="hidden" name="date" value={{$today}}>
+      <button class="date_button"><</button>
     </form>
     <p class="date_today">{{$today}}</p>
+    <form action="/attendance" method="POST">
+      @csrf
+      <input type="hidden" name="next" value="next">
+      <input type="hidden" name="date" value={{$today}}>
+      <button class="date_button">></button>
+    </form>
   </div>
   <div class="info">
     <table class ="info_attendance">
@@ -79,18 +104,20 @@
       @foreach($attendance as $attendance)
       <tr>
         <td>{{$attendance->user->name}}</td>
-        <td>{{$attendance->date}}</td>
+        <td>{{$attendance->date->format("Y-m-d")}}</td>
         <td>{{$attendance->start_at}}</td>
         <td>{{$attendance->end_at}}</td>
-
-
-        <td>休憩時間</td>
-        <td>{{$attendance->work_at}}</td>
-      </tr>
       @endforeach
+
+
+        <td>
+          @foreach($rest as $rest_at)
+            {{$rest_at->total_at->format("H:i:s")}}
+          @endforeach
+        </td>
+        <td>{{--$attendance->work_at--}}</td>
+      </tr>
     </table>
   </div>
+  {{$rest}}
 </div>
-@php
- dd($test1);
-@endphp

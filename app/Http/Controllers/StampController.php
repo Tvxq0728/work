@@ -26,15 +26,19 @@ class StampController extends Controller
         $start_time = Stamp::where("user_id",$user->id)->where("date",$today)->value("start_at");
         // 同日に既に出勤していた場合打刻できないようにする。(else)
         if($start_time == null){
+
+            $start_at = Carbon::now()->format("H:i:s");
+            
             Stamp::create([
                 "user_id"=>Auth::id(),
                 "date"=>Carbon::now()->format('Y-m-d'),
-                "start_at"=>Carbon::now(),
+                "start_at"=>Carbon::now()->format("H:i:s"),
             ]);
             return redirect("/")->with([
                     "message"=>"出勤記録しました。",
                     "start"=>"true",
                     "rest_end"=>"true",
+                    "start_test"=>$start_at,
                 ]);
         }else{
             return redirect("/")->with([
@@ -54,14 +58,17 @@ class StampController extends Controller
         if ($end_time !== null){
             return redirect("/")->with("message","退勤済");
         } else {
-            $end_at = Carbon::now();
+
+
+
+            $end_at = Carbon::now()->format("H:i:s");
             $work_total = $start_at->diffINSeconds($end_at);
             $work_at = date("H:i:s",$work_total);
 
             Stamp::where("user_id",$user->id)->where("date",$today)->whereNull("end_at")->update([
                 "user_id"=>Auth::id(),
-                "end_at"=>Carbon::now(),
-                "start_at"=>$start_at,
+                "end_at"=>Carbon::now()->format("H:i:s"),
+                // "start_at"=>$start_at,
                 "work_at"=>$work_total,
             ]);
         }
@@ -74,6 +81,7 @@ class StampController extends Controller
             "end"=>"true",
             "rest_start"=>"true",
             "rest_end"=>"true",
+            "end_at"=>$end_at,
         ]);
     }
     // 休憩開始を押した時の処理
@@ -139,7 +147,7 @@ class StampController extends Controller
 
         $rest_at = Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->whereNull("end_at")->update([
             "stamp_id"=>$stamp->id,
-            "end_at"=>Carbon::now(),
+            "end_at"=>Carbon::now()->format("H:i:s"),
             "total_at"=>$total,
         ]);
         return redirect("/")->with([
