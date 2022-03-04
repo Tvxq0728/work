@@ -17,10 +17,13 @@ class AttendanceController extends Controller
 
         $total_at = DB::table("rests")->whereDate("date",Carbon::now()->format("Y-m-d"))->orderBy("stamp_id","asc")->get();
 
+        $rest_at = Rest::whereDate("date",Carbon::now()->format("Y-m-d"))->select("total_at")->get();
+
         return view("attendance",[
             "today" => Carbon::now()->format("Y-m-d"),
             "attendance" => $attendance,
-            "total"=>$total_at
+            "total"=>$total_at,
+            "rest"=>$rest_at,
         ]);
     }
 

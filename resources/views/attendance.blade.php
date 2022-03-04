@@ -110,11 +110,11 @@
       @endforeach
 
 
+      @foreach($rest as $rest_at)
         <td>
-          @foreach($rest as $rest_at)
             {{$rest_at->total_at->format("H:i:s")}}
-          @endforeach
         </td>
+      @endforeach
         <td>{{--$attendance->work_at--}}</td>
       </tr>
     </table>
