@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Stamp;
 
 class Rest extends Model
 {
@@ -11,6 +12,6 @@ class Rest extends Model
     protected $fillable=["stamp_id","start_at","date"];
     protected $dates=["start_at","total_at"];
     public function user(){
-        return $this->belongTo("App\Models\Stamp");
+        return $this->hasMany("App\Models\Stamp");
     }
 }

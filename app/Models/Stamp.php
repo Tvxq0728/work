@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\Rest;
 
 class Stamp extends Model
 {
@@ -17,6 +18,6 @@ class Stamp extends Model
         return $this->belongsTo('App\Models\User');
     }
     public function rest(){
-        return $this->hasMany("App\Models\Rest");
+        return $this->belongsTo("App\Models\Rest");
     }
 }

@@ -196,6 +196,9 @@
       <p>
         {{session('end_at')}}
       </p>
+      <p>
+        {{session("test")}}
+      </p>
   </div>
 
 <!-- フッター -->

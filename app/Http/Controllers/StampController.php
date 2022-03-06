@@ -28,7 +28,7 @@ class StampController extends Controller
         if($start_time == null){
 
             $start_at = Carbon::now()->format("H:i:s");
-            
+
             Stamp::create([
                 "user_id"=>Auth::id(),
                 "date"=>Carbon::now()->format('Y-m-d'),
@@ -58,18 +58,21 @@ class StampController extends Controller
         if ($end_time !== null){
             return redirect("/")->with("message","退勤済");
         } else {
-
-
-
             $end_at = Carbon::now()->format("H:i:s");
             $work_total = $start_at->diffINSeconds($end_at);
-            $work_at = date("H:i:s",$work_total);
+            // 時間をだすためには
+            // $work_hr = floor($work_total / 60);
+            $work_min = floor($work_total / 60);
+            $work_sec = floor($work_total % 60);
+            $work_sec = $work_sec < 10 ? "0" . $work_sec : $work_sec;
+            $work_min = $work_min < 10 ? "0" . $work_min : $work_min;
+            // $work_hr = $work_hr < 10 ? "0".
+            $test = $work_min . ":" . $work_sec;
 
             Stamp::where("user_id",$user->id)->where("date",$today)->whereNull("end_at")->update([
                 "user_id"=>Auth::id(),
                 "end_at"=>Carbon::now()->format("H:i:s"),
-                // "start_at"=>$start_at,
-                "work_at"=>$work_total,
+                "work_at"=>$test,
             ]);
         }
         return redirect("/")->with([
@@ -82,6 +85,8 @@ class StampController extends Controller
             "rest_start"=>"true",
             "rest_end"=>"true",
             "end_at"=>$end_at,
+
+            "test"=>$test,
         ]);
     }
     // 休憩開始を押した時の処理

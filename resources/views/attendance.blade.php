@@ -61,6 +61,7 @@
           <ul>
             <li><a href="/">ホーム</a></li>
             <li><a href="/attendance">日付一覧表</a></li>
+            <li><a href="/userlist">勤怠管理一覧</a></li>
 
             <!-- ↓welcome.blade/navgation.blade参照 -->
             <form action="{{route('logout')}}" method="POST">
@@ -102,21 +103,24 @@
         <th>勤怠時間</th>
       </tr>
       @foreach($attendance as $attendance)
+      @foreach($rest as $rest_at)
       <tr>
         <td>{{$attendance->user->name}}</td>
         <td>{{$attendance->date->format("Y-m-d")}}</td>
-        <td>{{$attendance->start_at}}</td>
+        <td>{{$attendance->start_at->format("H:i:s")}}</td>
         <td>{{$attendance->end_at}}</td>
-      @endforeach
 
-
-      @foreach($rest as $rest_at)
         <td>
-            {{$rest_at->total_at->format("H:i:s")}}
+          テスト
+          {{--$rest_at->total_at->format("H:i:s")--}}
         </td>
-      @endforeach
-        <td>{{--$attendance->work_at--}}</td>
+
+        @foreach($attendance_total as $attendance_at)
+        <td>{{$attendance_at->work_at}}</td>
+        @endforeach
       </tr>
+      @endforeach
+      @endforeach
     </table>
   </div>
   {{$rest}}

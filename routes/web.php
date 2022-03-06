@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StampController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\UserListController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,6 +43,9 @@ Route::post("rest/end",[StampController::class,"rest_end"])->middleware(["auth"]
 // 日別勤怠管理
 Route::get("/attendance",[AttendanceController::class,"create"])->middleware(["auth"]);
 Route::post("/attendance",[AttendanceController::class,"search"])->middleware(["auth"]);
+
+// ユーザー別勤怠一覧
+Route::get("/userlist",[UserListController::class,"create"])->middleware(["auth"]);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
