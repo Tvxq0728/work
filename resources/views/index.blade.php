@@ -197,10 +197,12 @@
         {{session('end_at')}}
       </p>
       <p>
-        {{session("test")}}
+        {{session('test')}}
+      </p>
+      <p>
+        {{session('testa')}}
       </p>
   </div>
-
 <!-- フッター -->
     <div class="footer">
       <footer>Atte.inc</footer>
