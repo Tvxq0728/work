@@ -190,18 +190,6 @@
           @endif
         </form>
       </div>
-      <p>
-        {{session('start_test')}}
-      </p>
-      <p>
-        {{session('end_at')}}
-      </p>
-      <p>
-        {{session('test')}}
-      </p>
-      <p>
-        {{session('testa')}}
-      </p>
   </div>
 <!-- フッター -->
     <div class="footer">

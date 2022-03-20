@@ -45,7 +45,7 @@ Route::get("/attendance",[AttendanceController::class,"create"])->middleware(["a
 Route::post("/attendance",[AttendanceController::class,"search"])->middleware(["auth"]);
 
 // ユーザー別勤怠一覧
-Route::get("/userlist",[UserListController::class,"create"])->middleware(["auth"]);
+Route::get("/userlist",[UserListController::class,"index"])->middleware(["auth"]);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

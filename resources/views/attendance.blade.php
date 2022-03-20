@@ -103,25 +103,19 @@
         <th>勤怠時間</th>
       </tr>
       @foreach($attendance as $attendance)
-      @foreach($rest as $rest_at)
+      @foreach($rest as $rest)
       <tr>
         <td>{{$attendance->user->name}}</td>
         <td>{{$attendance->date->format("Y-m-d")}}</td>
         <td>{{$attendance->start_at->format("H:i:s")}}</td>
-        <td>{{$attendance->end_at}}</td>
-
         <td>
-          テスト
-          {{--$rest_at->total_at->format("H:i:s")--}}
+          {{$rest->total_at}}
         </td>
-
-        @foreach($attendance_total as $attendance_at)
-        <td>{{$attendance_at->work_at}}</td>
-        @endforeach
+        <td>{{$attendance->end_at}}</td>
+        <td>{{$attendance->work_at}}</td>
       </tr>
       @endforeach
-      @endforeach
-    </table>
-  </div>
-  {{$rest}}
+        @endforeach
+      </table>
+    </div>
 </div>
