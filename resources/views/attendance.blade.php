@@ -102,22 +102,21 @@
         <th>休憩時間</th>
         <th>勤怠時間</th>
       </tr>
-      @foreach($attendance as $attendance)
+      @foreach($attendance as $attendances)
+      {{--@foreach($rest as $rests)--}}
       <tr>
-        <td>{{$attendance->user->name}}</td>
-        <td>{{$attendance->date->format("Y-m-d")}}</td>
-        <td>{{$attendance->start_at->format("H:i:s")}}</td>
-        <td>{{$attendance->end_at}}</td>
-        <td>{{$attendance->work_at}}</td>
+        <td>{{$attendances->user->name}}</td>
+        <td>{{$attendances->date->format("Y-m-d")}}</td>
+        <td>{{$attendances->start_at->format("H:i:s")}}</td>
+        <td>{{$attendances->end_at}}</td>
+        <td>
+          {{--$rests--}}
+        </td>
+        <td>{{$attendances->work_at}}</td>
       </tr>
+      {{--@endforeach--}}
       @endforeach
-      <td>
-        @foreach($rest as $rest)
-        {{$rest->total_at}}
-        @endforeach
-      </td>
     </table>
-    {{$attendance->links()}}
-    <td>{{$rest->total_at}}</td>
+    {{$attendances->links()}}
     </div>
 </div>

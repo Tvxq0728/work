@@ -102,34 +102,7 @@
       <p>
         {{session('message')}}
       </p>
-
-      {{--検証用
-      終了
-      <p>
-        {{session('end_at')}}
-      </p>
-      開始
-      <p>
-        {{session('start_at')}}
-      </p>
-      差分
-      <p>
-        {{session("work_total")}}
-      </p>
-      勤怠時間
-      <p>
-        {{session('work_at')}}
-      </p>
-      休憩並び替え
-      <p>
-        {{session("rest_desc")}}
-      </p>
-      休憩呼び出し
-      <p>
-        {{session("rest_first")}}
-      </p>--}}
     </div>
-
     <div class="content_stampbtn" id="btn_start">
       <form action="/stamp/start" method="POST">
         {{--勤怠開始--}}

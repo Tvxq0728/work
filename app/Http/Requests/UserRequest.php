@@ -19,7 +19,7 @@ class UserRequest extends FormRequest
         //     return false;
         // }
         // ↑なぜThis action is unauthorized
-        
+
         return true;
     }
     /**
