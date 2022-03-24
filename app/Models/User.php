@@ -42,6 +42,6 @@ class User extends Authenticatable
     ];
 
     public function stamps(){
-        return $this->hasMany("App\Models\Book");
+        return $this->hasMany("App\Models\Stamp");
     }
 }

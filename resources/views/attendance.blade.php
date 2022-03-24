@@ -110,13 +110,13 @@
         <td>{{$attendances->start_at->format("H:i:s")}}</td>
         <td>{{$attendances->end_at}}</td>
         <td>
-          {{--$rests--}}
+          {{$attendance->rest->total_at}}
         </td>
         <td>{{$attendances->work_at}}</td>
       </tr>
       {{--@endforeach--}}
       @endforeach
     </table>
-    {{$attendances->links()}}
+    {{--$attendances->links()--}}
     </div>
 </div>
