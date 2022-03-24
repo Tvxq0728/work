@@ -51,6 +51,10 @@
   table{
     text-align:center;
   }
+  svg.w-5.h-5 {
+    width: 30px;
+    height: 30px;
+    }
 </style>
 
 <div class="header">
@@ -110,13 +114,15 @@
         <td>{{$attendances->start_at->format("H:i:s")}}</td>
         <td>{{$attendances->end_at}}</td>
         <td>
-          {{$attendance->rest->total_at}}
+          {{$attendances->rest->total_at->format("H:i:s")}}
         </td>
         <td>{{$attendances->work_at}}</td>
       </tr>
       {{--@endforeach--}}
       @endforeach
     </table>
-    {{--$attendances->links()--}}
+    <div class="d-flex justify-content-center">
+      {{$attendance->links()}}
     </div>
+  </div>
 </div>
