@@ -121,7 +121,7 @@
       {{--@endforeach--}}
       @endforeach
     </table>
-    <div class="d-flex justify-content-center">
+    <div>
       {{$attendance->links()}}
     </div>
   </div>
