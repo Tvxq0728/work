@@ -11,7 +11,7 @@ class Stamp extends Model
 {
     use HasFactory;
 
-    protected $fillable=["user_id","start_at","date"];
+    protected $fillable=["user_id","start_at","date","rest_id"];
     protected $dates=["start_at","date"];
 
     public function user(){
