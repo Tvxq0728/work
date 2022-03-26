@@ -55,6 +55,32 @@
     width: 30px;
     height: 30px;
     }
+/* ページネーション */
+  .pagination {
+    display:flex;
+    justify-content:center;
+    list-style:none;
+  }
+  .pagination li {
+    background:white;
+    width:30px;
+    text-align:center;
+    margin-bottom:2px;
+    margin-right:1px;
+  }
+  .pagination li:hover{
+    background: blue;
+    color: white;
+  }
+  .page-item :hover{
+    background: blue;
+    color: white;
+  }
+  .pagination li a {
+    display:block;
+    height: 100%;
+    text-decoration:none;
+  }
 </style>
 
 <div class="header">
