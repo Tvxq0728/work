@@ -12,9 +12,9 @@ class StampController extends Controller
 {
     public function index(){
         $user   = Auth::user();
-        $today  = Carbon::now()->format("Y-m-d");
         $end_at = Stamp::where('user_id', $user->id)
-        ->where('date', $today)
+        ->where('date', Carbon::now()
+        ->format("Y-m-d"))
         ->value('end_at');
         return view("index",
         ["user"=>$user]);
@@ -22,14 +22,11 @@ class StampController extends Controller
 // 勤怠開始を記録する。
 // 既に出勤している状態で出勤打刻を押した場合、メッセージで知らせる。
     public function attendance_start() {
-        $user       = Auth::user();
-        $start_time = Stamp::where("user_id",$user->id)
+        $start_time = Stamp::where("user_id",Auth::user()->id)
         ->where("date",Carbon::today()
         ->format("Y-m-d"))
         ->value("start_at");
         if ($start_time == null) {
-            $start_at = Carbon::now()
-            ->format("H:i:s");
             Stamp::create([
                 "user_id" =>Auth::id(),
                 "date"    =>Carbon::now()->format('Y-m-d'),
@@ -41,10 +38,10 @@ class StampController extends Controller
                     "rest_end"=>"true",
                 ]);
         }
-        return redirect("/")->with([
-            "message"  =>"出勤済",
-            "start"    =>"true",
-            "rest_rest"=>"true",
+            return redirect("/")->with([
+                    "message"  =>"出勤済",
+                    "start"    =>"true",
+                    "rest_rest"=>"true",
         ]);
 
     }
@@ -60,8 +57,7 @@ class StampController extends Controller
         if ($end_time !== null){
             return redirect("/")->with("message","退勤済");
         }
-        $end_at     = Carbon::now()->format("H:i:s");
-        $work_total = Stamp::where('user_id', $user->id)->where('date', $today)->orderBy("id","desc")->value('start_at')->diffINSeconds($end_at);
+        $work_total = Stamp::where('user_id', $user->id)->where('date', $today)->orderBy("id","desc")->value('start_at')->diffINSeconds(Carbon::now()->format("H:i:s"));
         // 1時間=3600秒であるため、秒数から時間を算出するために差分から3600の商を出す。
         $work_hour  = floor($work_total / 3600);
         $work_min   = floor(($work_total - 3600 * $work_hour) / 60);
@@ -137,11 +133,11 @@ class StampController extends Controller
                     // "rest_first"=>$rest,
                 ]);
         }
-        return redirect("/")->with([
-            "message"   =>"休憩中です",
-            "start"     =>"true",
-            "end"       =>"true",
-            "rest_start"=>"true",
+                return redirect("/")->with([
+                    "message"   =>"休憩中です",
+                    "start"     =>"true",
+                    "end"       =>"true",
+                    "rest_start"=>"true",
         ]);
     }
 // 休憩終了を記録し、休憩時間を計算する。
@@ -152,9 +148,15 @@ class StampController extends Controller
     public function rest_end(){
         $user  = Auth::user();
         $today = Carbon::today()->format("Y-m-d");
-        $stamp = Stamp::where("user_id",Auth::user()->id)->latest()->first();
-        $rest  = Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->first();
-        if (empty(Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->first()->end_at)){
+        $stamp = Stamp::where("user_id",Auth::user()->id)
+        ->latest()
+        ->first();
+        $rest  = Rest::where("stamp_id",$stamp->id)
+        ->orderBy("created_at","desc")
+        ->first();
+        if (empty(Rest::where("stamp_id",$stamp->id)
+        ->orderBy("created_at","desc")
+        ->first()->end_at)){
         $rest_total = Rest::where("stamp_id",$stamp->id)->orderby("created_at","desc")->value("start_at")->diffINSeconds(Carbon::now()->format("H:i:s"));
         $rest_hour  = floor($rest_total / 3600);
         $rest_min   = floor(($rest_total - 3600 * $rest_hour) / 60);
@@ -184,7 +186,10 @@ class StampController extends Controller
             ]);
         }
         elseif (!empty($rest->end_at)){
-            $rest_total = Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->value("start_at")->diffINSeconds(Carbon::now());
+            $rest_total = Rest::where("stamp_id",$stamp->id)
+            ->orderBy("created_at","desc")
+            ->value("start_at")
+            ->diffINSeconds(Carbon::now());
             $rest_hour  = floor($rest_total / 3600);
             $rest_min   = floor(($rest_total - 3600 * $rest_hour) / 60);
             $rest_sec   = floor($rest_total % 60);
@@ -193,7 +198,11 @@ class StampController extends Controller
             $rest_sec   = $rest_sec < 10 ? "0" . $rest_sec : $rest_sec;
             $rest_total = $rest_hour . ":" . $rest_min . ":" . $rest_sec;
             // 休憩時間の更新　↓
-            $rest_previous_total = Carbon::today()->diffInSeconds(Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->value("total_at")->format("H:i:s"));
+            $rest_previous_total = Carbon::today()
+            ->diffInSeconds(Rest::where("stamp_id",$stamp->id)
+            ->orderBy("created_at","desc")
+            ->value("total_at")
+            ->format("H:i:s"));
             $test_hour  = floor(floor($rest_previous_total / 3600) + $rest_hour);
             $test_min   = floor(floor($rest_previous_total - 3600 * $test_hour) / 60 + $rest_min);
             $test_sec   = floor(floor($rest_previous_total % 60) + $rest_sec);
@@ -213,9 +222,9 @@ class StampController extends Controller
         ]);
         }
         return redirect("/")->with([
-        "message" =>"休憩終了済",
-        "start"   =>"true",
-        "rest_end"=>"true",
+            "message" =>"休憩終了済",
+            "start"   =>"true",
+            "rest_end"=>"true",
         ]);
     }
 }

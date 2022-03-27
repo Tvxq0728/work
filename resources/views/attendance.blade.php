@@ -132,23 +132,21 @@
         <th>休憩時間</th>
         <th>勤怠時間</th>
       </tr>
-      @foreach($attendance as $attendances)
-      {{--@foreach($rest as $rests)--}}
+      @foreach($stamps as $stamp)
       <tr>
-        <td>{{$attendances->user->name}}</td>
-        <td>{{$attendances->date->format("Y-m-d")}}</td>
-        <td>{{$attendances->start_at->format("H:i:s")}}</td>
-        <td>{{$attendances->end_at}}</td>
+        <td>{{$stamp->user->name}}</td>
+        <td>{{$stamp->date->format("Y-m-d")}}</td>
+        <td>{{$stamp->start_at->format("H:i:s")}}</td>
+        <td>{{$stamp->end_at}}</td>
         <td>
-          {{$attendances->rest->total_at->format("H:i:s")}}
+          {{$stamp->rest->total_at->format("H:i:s")}}
         </td>
-        <td>{{$attendances->work_at}}</td>
+        <td>{{$stamp->work_at}}</td>
       </tr>
-      {{--@endforeach--}}
       @endforeach
     </table>
     <div>
-      {{$attendance->links()}}
+      {{$stamps->appends(['data' => $today])->links()}}
     </div>
   </div>
 </div>

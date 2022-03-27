@@ -13,6 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // seeder
         $this->call(StampsTableSeeder::class);
+        // factory
+        \App\Models\User::factory(6)->create();
     }
 }
