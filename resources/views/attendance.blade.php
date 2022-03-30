@@ -105,7 +105,6 @@
           </ul>
       </div>
 </div>
-
 <div class="content">
   <div class="date">
     <form action="/attendance" method="POST">
@@ -146,7 +145,8 @@
       @endforeach
     </table>
     <div>
-      {{$stamps->appends(['data' => $today])->links()}}
+      {{$stamps->appends(['date' => $today ])
+        ->links()}}
     </div>
   </div>
 </div>

@@ -18,8 +18,7 @@ use App\Http\Controllers\UserListController;
 
 // 打刻ページ
 Route::get('/', function () {
-    // [StampController::class,"create"];
-    $user=Auth::user();
+    $user = Auth::user();
     return view("index",["user"=>$user]);
 })->middleware(["auth"]);
 

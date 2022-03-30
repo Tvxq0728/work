@@ -57,7 +57,11 @@ class StampController extends Controller
         if ($end_time !== null){
             return redirect("/")->with("message","退勤済");
         }
-        $work_total = Stamp::where('user_id', $user->id)->where('date', $today)->orderBy("id","desc")->value('start_at')->diffINSeconds(Carbon::now()->format("H:i:s"));
+        $work_total = Stamp::where('user_id', $user->id)
+        ->where('date', $today)
+        ->orderBy("id","desc")
+        ->value('start_at')
+        ->diffINSeconds(Carbon::now()->format("H:i:s"));
         // 1時間=3600秒であるため、秒数から時間を算出するために差分から3600の商を出す。
         $work_hour  = floor($work_total / 3600);
         $work_min   = floor(($work_total - 3600 * $work_hour) / 60);
@@ -67,7 +71,10 @@ class StampController extends Controller
         $work_min   = $work_min < 10 ? "0" . $work_min : $work_min;
         $work_sec   = $work_sec < 10 ? "0" . $work_sec : $work_sec;
         $work_total = $work_hour . ":" . $work_min . ":" . $work_sec;
-        Stamp::where("user_id",$user->id)->where("date",$today)->whereNull("end_at")->update([
+        Stamp::where("user_id",$user->id)
+            ->where("date",$today)
+            ->whereNull("end_at")
+            ->update([
             "user_id"=>Auth::id(),
             "end_at" =>Carbon::now()->format("H:i:s"),
             "work_at"=>$work_total,
@@ -88,8 +95,12 @@ class StampController extends Controller
         $stamp      = Stamp::where("user_id",$user->id)
                             ->orderBy("id","desc")
                             ->first();
-        $stamp_test = Stamp::where("user_id",$user->id)->latest()->first();
-        $rest       = Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->first();
+        $stamp_test = Stamp::where("user_id",$user->id)
+        ->latest()
+        ->first();
+        $rest       = Rest::where("stamp_id",$stamp->id)
+        ->orderBy("created_at","desc")
+        ->first();
         if (!empty($stamp->end_at))
         {
             return redirect("/")->with([
@@ -109,7 +120,9 @@ class StampController extends Controller
                 ->orderBy("id","desc")
                 ->first()
                 ->update([
-                    "rest_id" => Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->value("id")
+                    "rest_id" => Rest::where("stamp_id",$stamp->id)
+                                ->orderBy("created_at","desc")
+                                ->value("id")
                 ]);
                 return redirect("/")->with([
                     "message"   =>"休憩開始記録しました。",
@@ -119,7 +132,9 @@ class StampController extends Controller
                 ]);
         }
         elseif (!empty($rest->end_at)){
-            $rest_at = Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->update([
+            $rest_at = Rest::where("stamp_id",$stamp->id)
+            ->orderBy("created_at","desc")
+            ->update([
                     "stamp_id"=>$stamp->id,
                     "date"    =>$today,
                     "start_at"=>Carbon::now()->format("H:i:s"),
@@ -129,8 +144,6 @@ class StampController extends Controller
                     "start"     =>"true",
                     "end"       =>"true",
                     "rest_start"=>"true",
-                    // "rest_desc"=>$rest_desc,
-                    // "rest_first"=>$rest,
                 ]);
         }
                 return redirect("/")->with([
@@ -157,7 +170,10 @@ class StampController extends Controller
         if (empty(Rest::where("stamp_id",$stamp->id)
         ->orderBy("created_at","desc")
         ->first()->end_at)){
-        $rest_total = Rest::where("stamp_id",$stamp->id)->orderby("created_at","desc")->value("start_at")->diffINSeconds(Carbon::now()->format("H:i:s"));
+        $rest_total = Rest::where("stamp_id",$stamp->id)
+        ->orderby("created_at","desc")
+        ->value("start_at")
+        ->diffINSeconds(Carbon::now()->format("H:i:s"));
         $rest_hour  = floor($rest_total / 3600);
         $rest_min   = floor(($rest_total - 3600 * $rest_hour) / 60);
         $rest_sec   = floor($rest_total % 60);
@@ -165,7 +181,10 @@ class StampController extends Controller
         $rest_min   = $rest_min < 10 ? "0" . $rest_min : $rest_min;
         $rest_sec   = $rest_sec < 10 ? "0" . $rest_sec : $rest_sec;
         $rest_total = $rest_hour . ":" . $rest_min . ":" . $rest_sec;
-        $rest_at = Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->whereNull("end_at")->update([
+        $rest_at = Rest::where("stamp_id",$stamp->id)
+        ->orderBy("created_at","desc")
+        ->whereNull("end_at")
+        ->update([
             "stamp_id"=>$stamp->id,
             "end_at"  =>Carbon::now()->format("H:i:s"),
             "total_at"=>$rest_total,
@@ -210,7 +229,9 @@ class StampController extends Controller
             $test_min   = $test_min < 10 ? "0" . $test_min : $test_min;
             $test_sec   = $test_sec < 10 ? "0" . $test_sec : $test_sec;
             $test_total = $test_hour . ":" . $test_min . ":" . $test_sec;
-            $test_at    = Rest::where("stamp_id",$stamp->id)->orderBy("created_at","desc")->update([
+            $test_at    = Rest::where("stamp_id",$stamp->id)
+            ->orderBy("created_at","desc")
+            ->update([
                 "stamp_id"=>$stamp->id,
                 "end_at"  =>Carbon::now()->format("H:i:s"),
                 "total_at"=>$test_total
