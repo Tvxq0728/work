@@ -54,8 +54,14 @@ class StampController extends Controller
         $user     = Auth::user();
         $today    = Carbon::today()->format('Y-m-d');
         $end_time = Stamp::where('user_id', $user->id)->where('date', $today)->value('end_at');
-        if ($end_time !== null){
-            return redirect("/")->with("message","退勤済");
+        if ($end_time !== null 
+        // ||
+        // Rest::where('data',Carbon::now())
+        // ->where('stamp_id',Stamp::where('user_id',$user->id)
+        // ->where("data",Carbon::today()->format("Y-m-d")))
+        // ->value("end_at") == null
+        ){
+            return redirect("/")->with("message","退勤済または休憩中");
         }
         $work_total = Stamp::where('user_id', $user->id)
         ->where('date', $today)
@@ -93,8 +99,8 @@ class StampController extends Controller
         $user       = Auth::user();
         $today      = Carbon::today()->format("Y-m-d");
         $stamp      = Stamp::where("user_id",$user->id)
-                            ->orderBy("id","desc")
-                            ->first();
+        ->orderBy("id","desc")
+        ->first();
         $stamp_test = Stamp::where("user_id",$user->id)
         ->latest()
         ->first();

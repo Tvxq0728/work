@@ -11,6 +11,7 @@
   .header_nav ul{
     display:flex;
     justify-content:space-around;
+    color: black;
   }
   .header_nav ul li{
     list-style:none;
@@ -20,6 +21,7 @@
   }
   .header_nav a{
     text-decoration:none;
+    color: black;
   }
   /* 日付 */
   .date{
