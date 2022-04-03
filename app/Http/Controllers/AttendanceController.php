@@ -19,6 +19,7 @@ class AttendanceController extends Controller
             "today"      => Carbon::now()->format("Y-m-d"),
             "stamps" => Stamp::whereDate("date",Carbon::now()->format("Y-m-d"))->orderBy("user_id","asc")->Paginate(5),
         ]);
+
     }
 // 日付サイドの｢</>｣を押すと日付の1日前/1日後のデータを表示する。
 // < =　値｢back」を受け取り1日前に戻す。
