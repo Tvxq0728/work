@@ -93,8 +93,6 @@
           <ul>
             <li><a href="/">ホーム</a></li>
             <li><a href="/attendance">日付一覧表</a></li>
-            <li><a href="/userlist">勤怠管理一覧</a></li>
-
             <!-- ↓welcome.blade/navgation.blade参照 -->
             <form action="{{route('logout')}}" method="POST">
               @csrf

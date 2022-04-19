@@ -54,14 +54,55 @@ class StampController extends Controller
         $user     = Auth::user();
         $today    = Carbon::today()->format('Y-m-d');
         $end_time = Stamp::where('user_id', $user->id)->where('date', $today)->value('end_at');
-        if ($end_time !== null 
-        // ||
-        // Rest::where('data',Carbon::now())
-        // ->where('stamp_id',Stamp::where('user_id',$user->id)
-        // ->where("data",Carbon::today()->format("Y-m-d")))
-        // ->value("end_at") == null
-        ){
+        if ($end_time !== null)
+        {
             return redirect("/")->with("message","退勤済または休憩中");
+        }
+        elseif (!empty( Stamp::where('user_id', $user->id)->where('date', $today)->value('rest_id')))
+        {
+        $work_total = Stamp::where('user_id', $user->id)
+        ->where('date', $today)
+        ->orderBy("id","desc")
+        ->value('start_at')
+        ->diffINSeconds(Carbon::now()->format("H:i:s"));
+        // 1時間=3600秒であるため、秒数から時間を算出するために差分から3600の商を出す。
+        $work_hour  = floor($work_total / 3600);
+        $work_min   = floor(($work_total - 3600 * $work_hour) / 60);
+        $work_sec   = floor($work_total % 60);
+        // 条件式で○○:○○に合わせるようにする。
+        $work_hour  = $work_hour < 10 ? "0" . $work_hour : $work_hour;
+        $work_min   = $work_min < 10 ? "0" . $work_min : $work_min;
+        $work_sec   = $work_sec < 10 ? "0" . $work_sec : $work_sec;
+        $work_total = $work_hour . ":" . $work_min . ":" . $work_sec;
+        // 休憩時間を差し引いた勤務時間
+        $attendance_total = Rest::where("stamp_id",Stamp::where("user_id",Auth::user()->id)
+        ->latest()
+        ->first()
+        ->id)
+        ->orderby("created_at","desc")
+        ->value("total_at")
+        ->diffINSeconds($work_total);
+        $attendance_hour  = floor($attendance_total / 3600);
+        $attendance_min   = floor(($attendance_total - 3600 * $attendance_hour) / 60);
+        $attendance_sec   = floor($attendance_total % 60);
+        $attendance_hour  = $attendance_hour < 10 ? "0" . $attendance_hour : $attendance_hour;
+        $attendance_min   = $attendance_min < 10 ? "0" . $attendance_min : $attendance_min;
+        $attendance_sec   = $attendance_sec < 10 ? "0" . $attendance_sec : $attendance_sec;
+        $attendance_total = $attendance_hour . ":" . $attendance_min . ":" . $attendance_sec;
+        Stamp::where("user_id",$user->id)
+            ->where("date",$today)
+            ->whereNull("end_at")
+            ->update([
+            "user_id"=>Auth::id(),
+            "end_at" =>Carbon::now()->format("H:i:s"),
+            "work_at"=>$attendance_total,
+            ]);
+        return redirect("/")->with([
+            "message"   =>"退勤記録しました。",
+            "end"       =>"true",
+            "rest_start"=>"true",
+            "rest_end"  =>"true",
+        ]);
         }
         $work_total = Stamp::where('user_id', $user->id)
         ->where('date', $today)
@@ -77,6 +118,16 @@ class StampController extends Controller
         $work_min   = $work_min < 10 ? "0" . $work_min : $work_min;
         $work_sec   = $work_sec < 10 ? "0" . $work_sec : $work_sec;
         $work_total = $work_hour . ":" . $work_min . ":" . $work_sec;
+        Rest::create([
+            "stamp_id"=>Stamp::where("user_id",$user->id)
+            ->orderBy("id","desc")
+            ->first()
+            ->id,
+            "date"    =>$today,
+            "start_at"=>Carbon::today()->format("H:i:s"),
+            "end_at"  =>Carbon::today(),
+            "total_at"=>Carbon::today(),
+        ]);
         Stamp::where("user_id",$user->id)
             ->where("date",$today)
             ->whereNull("end_at")
@@ -84,6 +135,11 @@ class StampController extends Controller
             "user_id"=>Auth::id(),
             "end_at" =>Carbon::now()->format("H:i:s"),
             "work_at"=>$work_total,
+            "rest_id"=>Rest::where("stamp_id",Stamp::where("user_id",$user->id)
+        ->orderBy("id","desc")
+        ->first()->id)
+            ->orderBy("created_at","desc")
+            ->value("id")
         ]);
         return redirect("/")->with([
             "message"   =>"退勤記録しました。",

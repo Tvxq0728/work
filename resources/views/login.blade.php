@@ -80,7 +80,7 @@
           @enderror
           <tr>
             <td>
-              <input type="email" name="mail" placeholder="メールアドレス"
+              <input type="email" name="mail" placeholder="メールアドレｓ"
               value="{{old('email')}}">
             </td>
           </tr>

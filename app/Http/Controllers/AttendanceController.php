@@ -14,10 +14,16 @@ class AttendanceController extends Controller
 {
 // 今日日付の勤怠しているユーザーを表示する。
 // 1ページ5人を出力し、ページで管理する。
-    public function create(){
+    public function create(Request $request){
+        $date   = $request->input("date")
+        ?: Carbon::now()->format("Y-m-d");
+        $stamps = Stamp::whereDate("date",$date)
+        ->orderBy("user_id","asc")
+        ->Paginate(5);
         return view("attendance",[
-            "today"      => Carbon::now()->format("Y-m-d"),
-            "stamps" => Stamp::whereDate("date",Carbon::now()->format("Y-m-d"))->orderBy("user_id","asc")->Paginate(5),
+            "today"  => $date,
+            "stamps" => $stamps
+            // "stamps" => Stamp::whereDate("date",Carbon::now()->format("Y-m-d"))->orderBy("user_id","asc")->Paginate(5),
         ]);
 
     }

@@ -46,7 +46,8 @@
 
 /* 打刻 */
   .content{
-    background:#F5F5F5
+    background:#F5F5F5;
+    height:auto;
   }
   .content_stampbtn{
     display:flex;
