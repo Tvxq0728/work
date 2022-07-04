@@ -10,7 +10,7 @@ use App\Models\User;
 class Rest extends Model
 {
     use HasFactory;
-    protected $fillable=["stamp_id","start_at","date"];
+    protected $fillable=["stamp_id","start_at","date","end_at","total_at"];
     protected $dates=["start_at","total_at"];
     public function user(){
         return $this->hasMany("App\Models\Stamp");

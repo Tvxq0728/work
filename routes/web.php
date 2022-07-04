@@ -40,7 +40,7 @@ Route::post("rest/start",  [StampController::class,"rest_start"])->middleware(["
 Route::post("rest/end",    [StampController::class,"rest_end"])->middleware(["auth"]);
 
 // 日別勤怠管理
-Route::get("/attendance",  [AttendanceController::class,"create"])->middleware(["auth"]);
+Route::get("/attendance",  [AttendanceController::class,"create"])->middleware(["auth"])->name("login");
 Route::post("/attendance", [AttendanceController::class,"search"])->middleware(["auth"]);
 
 // ユーザー別勤怠一覧
